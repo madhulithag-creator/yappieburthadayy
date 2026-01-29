@@ -197,20 +197,20 @@ export default function FinalLetter({ onRestart }: FinalLetterProps) {
 
                     {/* Letter paragraphs */}
                     <div className="space-y-4 mb-6">
-                      {textConfig.finalLetter.letterParagraphs.map((paragraph, index) => (
-                        <p 
-                          key={index}
-                          className={`${
-                            index === 0 ? 'text-[#1b0d14]' :
-                            index === 1 ? 'text-[#7fbcd9]' :
-                            index === 2 ? 'text-[#1b0d14]' :
-                            index === 3 ? 'text-[#cdb4db]' :
-                            'text-[#f04299] font-medium'
-                          }`}
-                        >
-                          {paragraph}
-                        </p>
-                      ))}
+                      {textConfig.finalLetter.letterParagraphs.map((paragraph: string, index: number) => (
+                          <p 
+                            key={index}
+                            className={`${
+                              index === 0 ? 'text-[#1b0d14]' :
+                              index === 1 ? 'text-[#7fbcd9]' :
+                              index === 2 ? 'text-[#1b0d14]' :
+                              index === 3 ? 'text-[#cdb4db]' :
+                              'text-[#f04299] font-medium'
+                            }`}
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
                     </div>
                   </div>
 
