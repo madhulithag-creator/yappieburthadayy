@@ -112,7 +112,7 @@ export default function FinalLetter({ onRestart }: FinalLetterProps) {
               animationDelay: `${k.delay}ms`,
             }}
           >
-            <span className="block">💋</span>
+            <span className="block">💣</span>
             <span className="sparkle" />
           </div>
         ))}
