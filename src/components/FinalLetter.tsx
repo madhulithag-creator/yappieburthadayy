@@ -50,7 +50,7 @@ export default function FinalLetter({ onRestart }: FinalLetterProps) {
     return () => {
       if (typingTimerRef.current) {
         window.clearInterval(typingTimerRef.current);
-        timingTimerRef.current = null;
+        typingTimerRef.current = null;
       }
     };
   }, [isSealed]);
