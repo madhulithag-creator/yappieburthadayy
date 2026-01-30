@@ -63,8 +63,15 @@ function App() {
 
 export default function App() {
   return (
-    <div style={{ color: "white", fontSize: "30px" }}>
-      IT WORKS 🎉
+    <div
+      style={{
+        color: "black",
+        fontSize: "40px",
+        padding: "40px",
+        background: "white",
+      }}
+    >
+      HELLO FROM GITHUB PAGES 🚀
     </div>
   )
 }
