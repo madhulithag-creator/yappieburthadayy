@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import bombsSound from "../music/music1.mp3";
-import LetterImg from "../assets/letter.png";
+import LetterImg from "/assets/letter.png";
 
 type Bomb = {
   id: number;
