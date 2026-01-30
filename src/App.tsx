@@ -61,4 +61,10 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <div style={{ color: "white", fontSize: "30px" }}>
+      IT WORKS 🎉
+    </div>
+  )
+}
