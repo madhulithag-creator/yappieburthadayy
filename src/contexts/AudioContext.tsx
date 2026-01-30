@@ -1,158 +1,45 @@
-import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
+import React, { createContext, useContext, useRef } from "react";
 
-type Track = {
-  id: number;
-  title: string;
-  caption: string;
-  src: string;
-  cover: string;
+type AudioCtx = {
+  play: (src: string) => void;
+  stop: () => void;
 };
 
-interface AudioContextType {
-  activeTrack: Track | null;
-  isPlaying: boolean;
-  progress: number;
-  currentTime: number;
-  duration: number;
-  playTrack: (track: Track) => Promise<void>;
-  pauseTrack: () => void;
-  togglePlayPause: () => Promise<void>;
-  seekTo: (progress: number) => void;
-  stopAll: () => void;
-}
+const Ctx = createContext<AudioCtx | null>(null);
 
-const AudioContext = createContext<AudioContextType | null>(null);
-
-export const useAudio = () => {
-  const context = useContext(AudioContext);
-  if (!context) {
-    throw new Error('useAudio must be used within AudioProvider');
-  }
-  return context;
-};
-
-export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [activeTrack, setActiveTrack] = useState<Track | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
 
-  // Initialize audio element
-  useEffect(() => {
-    audioRef.current = new Audio();
-    const audio = audioRef.current;
-
-    const onTimeUpdate = () => {
-      const d = audio.duration || 0;
-      setDuration(d);
-      setCurrentTime(audio.currentTime);
-      setProgress(d ? audio.currentTime / d : 0);
-    };
-
-    const onEnded = () => {
-      setIsPlaying(false);
-      setProgress(0);
-      setCurrentTime(0);
-    };
-
-    const onLoadedMetadata = () => {
-      setDuration(audio.duration || 0);
-    };
-
-    audio.addEventListener('timeupdate', onTimeUpdate);
-    audio.addEventListener('ended', onEnded);
-    audio.addEventListener('loadedmetadata', onLoadedMetadata);
-
-    return () => {
-      audio.removeEventListener('timeupdate', onTimeUpdate);
-      audio.removeEventListener('ended', onEnded);
-      audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-      audio.pause();
-    };
-  }, []);
-
-  const playTrack = async (track: Track) => {
-    if (!audioRef.current) return;
-
-    const audio = audioRef.current;
-    
-    // If it's a different track, load it
-    if (!activeTrack || activeTrack.id !== track.id) {
-      audio.src = track.src;
-      audio.currentTime = 0;
-      setActiveTrack(track);
-      setProgress(0);
-      setCurrentTime(0);
-    }
-
-    try {
-      await audio.play();
-      setIsPlaying(true);
-    } catch (err) {
-      console.warn('Playback blocked or failed:', err);
-      setIsPlaying(false);
-    }
-  };
-
-  const pauseTrack = () => {
+  const play = (src: string) => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
     }
+
+    const audio = new Audio(src);
+    audio.volume = 0.9;
+    audio.loop = true;
+
+    audio.play().catch(err => {
+      console.error("Audio blocked until user interaction", err);
+    });
+
+    audioRef.current = audio;
   };
 
-  const togglePlayPause = async () => {
-    if (!audioRef.current || !activeTrack) return;
-
-    if (isPlaying) {
-      pauseTrack();
-    } else {
-      await playTrack(activeTrack);
-    }
-  };
-
-  const seekTo = (progressValue: number) => {
-    if (!audioRef.current || !activeTrack) return;
-    
-    const audio = audioRef.current;
-    if (!audio.duration) return;
-    
-    const time = (progressValue / 100) * audio.duration;
-    audio.currentTime = time;
-    setCurrentTime(time);
-    setProgress(progressValue / 100);
-  };
-
-  const stopAll = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    setActiveTrack(null);
-    setIsPlaying(false);
-    setProgress(0);
-    setCurrentTime(0);
-    setDuration(0);
-  };
-
-  const value: AudioContextType = {
-    activeTrack,
-    isPlaying,
-    progress,
-    currentTime,
-    duration,
-    playTrack,
-    pauseTrack,
-    togglePlayPause,
-    seekTo,
-    stopAll,
+  const stop = () => {
+    audioRef.current?.pause();
+    audioRef.current = null;
   };
 
   return (
-    <AudioContext.Provider value={value}>
+    <Ctx.Provider value={{ play, stop }}>
       {children}
-    </AudioContext.Provider>
+    </Ctx.Provider>
   );
+};
+
+export const useAudio = () => {
+  const ctx = useContext(Ctx);
+  if (!ctx) throw new Error("useAudio must be used inside AudioProvider");
+  return ctx;
 };

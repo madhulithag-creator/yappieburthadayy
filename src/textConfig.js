@@ -119,9 +119,9 @@ signature: "thankyou sarrrrrrrr!!!💕",
     // Letter content
     letterGreeting: "My dearest birthday gorreyyyy,",
     letterParagraphs: [
-      "Sar I am very grateful to you. You are the best in my POV and I really really respect you sir. and I obviously am a fan of you .💖💗",
-      "ehehe saar edseyodhu ivi anni chadivi...!!!! edo formality ki rasa leeendiii(joke chesthuna I really mean everything that I said). I really dont have anything to say except you are the bestttttt!!!!!!!!!!!<33333."
-      
+      "Sar I am very grateful to you. You are the best in my POV and I really really respect you sir. and I obviously am a fan of you. Nijanga cheppalante, words saripovatledu. Mee support, mee guidance, mee way of being — everything inspires me a lot.",
+
+      "ehehe saar edseyodhu ivi anni chadivi...!!!! edo formality ki rasa leeendiii(joke chesthuna I really mean everything that I said). Nijanga cheppalante, words saripovatledu. Mee support, mee guidance, mee way of being — everything inspires me a lot. And na POV lo ithe YOU ARE THE BESTTTTTTT!!!!!"
     ],
     sealingNote: "Sealing will complete your birthday experience."
   },
